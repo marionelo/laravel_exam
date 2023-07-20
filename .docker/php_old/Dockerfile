@@ -7,21 +7,17 @@ RUN  apt-get update -y \
     && apt-get install -y dbconfig-common \
     && apt-get install -y libcurl4-openssl-dev \
     && apt-get install -y libfreetype6-dev \
-    && apt-get install -y libjpeg62-turbo-dev \
-    && apt-get install -y libpng-dev \
-    && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install pdo_mysql
 
 RUN docker-php-ext-configure exif \
 	&& docker-php-ext-install exif \
 	&& docker-php-ext-enable exif \
-	&& docker-php-ext-install bcmath 
+	&& docker-php-ext-install bcmath
 
 
 #instalando Node
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION v16.20.0
+ENV NODE_VERSION v18.17.0
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
@@ -40,13 +36,6 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-
-RUN apt-get -y install \
-    libmagickwand-dev ghostscript \
-    --no-install-recommends \
-    && pecl install imagick \
-    && docker-php-ext-enable imagick
 
 # INSTALL EXT-ZIP
 RUN apt-get install -y \
